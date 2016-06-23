@@ -42,8 +42,8 @@ sudo docker volume create --name bookeddata
 * First, take care of assessing environment variables
  * each container has its own <service>.env file in its own folder
  * private settings are to be put in non versioned env files 
-  * docker.env (see docker.priv.env-dist)
-  * common.env (see common.priv.env-dist)
+  * docker.priv.env (see docker.priv.env-dist)
+  * common.priv.env (see common.priv.env-dist)
 
 ```
 ./compose.sh build nginx

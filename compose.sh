@@ -9,6 +9,7 @@ then
 fi
 
 eval $(cat docker.priv.env)
+cmdprefix="eval $(cat docker.priv.env)"
 
 if [[ -z $ENV || ! ${environments[*]} =~ $ENV ]]
 then
@@ -74,7 +75,7 @@ case "$subcommand" in
     fi      
     shift $((OPTIND -1))
 
-    command="sudo docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml up -d $service"
+    command="$cmdprefix sudo -E docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml up -d $service"
     echo $command    
     ;;
   stop)
@@ -84,15 +85,15 @@ case "$subcommand" in
     fi
     shift $((OPTIND -1))
 
-    command="sudo docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml stop $service"
+    command="$cmdprefix sudo -E docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml stop $service"
     echo $command    
     ;;    
   openvpn)  
-    command="sudo docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml -f docker-compose.admin.yml up -d openvpn"
+    command="$cmdprefix sudo -E docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml -f docker-compose.admin.yml up -d openvpn"
     ;;
   backup)
     echo "Performing backup  of docker volumes in /backup" 
-    command="sudo docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml -f docker-compose.admin.yml run --rm backup"
+    command="$cmdprefix sudo -E docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml -f docker-compose.admin.yml run --rm backup"
     ;;    
 esac
 
