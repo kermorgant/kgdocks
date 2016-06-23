@@ -40,7 +40,9 @@ services:
       - "80:80"
     command: nginx
     networks:
-      - front
+      front:
+        aliases:
+          - ds.${DOMAIN}
     depends_on:
       - odoo
       - redmine
@@ -65,11 +67,11 @@ services:
       - xibodata:/var/www/xibo
     links:
       - mariadb
-#    logging:
-#      driver: syslog
-#      options:
-#        syslog-address: udp://localhost:514 
-#        tag: xibo
+    logging:
+       driver: syslog
+       options:
+         syslog-address: udp://localhost:514 
+         tag: xibo
   booked:
     container_name: booked
     build: booked

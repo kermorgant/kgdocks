@@ -5,19 +5,19 @@ if [ -e "/CMS-FLAG" ]
 then
   if [ -e "/var/www/xibo/settings.php" ]
   then
-    # Backup the settings.php file
-    mv /var/www/xibo/settings.php /tmp/settings.php
-
     # Run a database backup
-    dbuser=$(awk -F "'" '/\$dbuser/ {print $2}' /tmp/settings.php)
-    dbpass=$(awk -F "'" '/\$dbpass/ {print $2}' /tmp/settings.php)
-    dbname=$(awk -F "'" '/\$dbpass/ {print $2}' /tmp/settings.php)
+    dbuser=$(awk -F "'" '/dbuser =/ {print $2}' /var/www/xibo/settings.php)
+    dbpass=$(awk -F "'" '/dbpass =/ {print $2}' /var/www/xibo/settings.php)
+    dbname=$(awk -F "'" '/dbname =/ {print $2}' /var/www/xibo/settings.php)
     
     mysqldump -h mariadb -u $dbuser -p$dbpass $dbname | gzip > /var/www/backup/$(date +"%Y-%m-%d_%H-%M-%S").sql.gz
 
+    # Backup the settings.php file
+    mv /var/www/xibo/settings.php /tmp/settings.php
+    
     # Delete the old install EXCEPT the library directory
-    find /var/www/xibo ! -name library -type d -exec rm -rf {};
-    find /var/www/xibo -type f --max-depth=1 -exec rm -f {};
+    find /var/www/xibo ! -name library -type d -exec rm -rf {} \;
+    find /var/www/xibo -type f -maxdepth 1 -exec rm -f {} \;
 
     # Replace settings
     mv /tmp/settings.php /var/www/xibo/settings.php
@@ -31,8 +31,7 @@ then
 
   tar --strip=1 -zxf /var/www/xibo-cms.tar.gz -C /var/www/xibo --exclude=settings.php
 
-  chown www-data.www-data -R /var/www/xibo/web
-  chown www-data.www-data -R /var/www/xibo/install
+  chown www-data.www-data -R /var/www/xibo
 
   mkdir /var/www/xibo/cache
   mkdir -p /var/www/xibo/library/temp
@@ -115,7 +114,7 @@ then
   /usr/sbin/groupadd ssmtp
   
   # Ensure there's a crontab for maintenance
-  cp /var/www/backup/cron/cms-maintenance /etc/cron.d/cms-maintenance
+  echo "*/5 * * * * wget -q -O /dev/null http://ds.${DOMAIN}/maintenance.php?key=${MAINTENANCE_KEY}" > /etc/cron.d/cms-maintenance
   
 fi
 

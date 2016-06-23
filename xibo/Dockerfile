@@ -1,6 +1,6 @@
 FROM php:5-fpm
 MAINTAINER Mikael Kermorgant <mikael.kermorgant@gmail.com>
-ENV REFRESHED_AT 2016-06-28
+ENV REFRESHED_AT 2016-06-24
 
 RUN apt-get update && apt-get install -y \
 	ssmtp \
@@ -15,9 +15,8 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install gd curl \
     && docker-php-ext-install iconv mcrypt \
     && docker-php-ext-install pdo pdo_mysql \
-    && docker-php-ext-install mysql soap gettext calendar zip 
+    && docker-php-ext-install mysql soap gettext calendar zip \
     && docker-php-ext-install intl
-#    && docker-php-ext-install zmq
 
 ENV XIBO_VERSION=1.7.7
 
