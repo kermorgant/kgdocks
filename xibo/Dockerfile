@@ -30,6 +30,7 @@ RUN mkdir -p /var/www/xibo
 RUN mkdir -p /var/www/backup
 
 VOLUME /var/www/xibo
+VOLUME /var/www/backup
 WORKDIR /var/www/xibo
 
 COPY entrypoint.sh /entrypoint.sh

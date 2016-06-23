@@ -42,10 +42,9 @@ then
     # This is a fresh install so bootstrap the whole
     # system
     echo "New install"
-    mkdir -p /var/www/xibo/web
     mkdir -p /var/www/xibo/cache
     mkdir -p /var/www/xibo/library/temp
-    chown www-data.www-data -R /var/www/xibo/web /var/www/xibo/cache /var/www/xibo/library
+    chown www-data.www-data -R /var/www/xibo/cache /var/www/xibo/library
     
     # Sleep for a few seconds to give MySQL time to initialise
     echo "Waiting for MySQL to start - max 300 seconds"
@@ -99,7 +98,7 @@ then
     mysql -D $DB_NAME -u $DB_XIBO_USER -p$DB_XIBO_PASSWORD -h mariadb -e "UPDATE \`setting\` SET \`value\`='$MAINTENANCE_KEY' WHERE \`setting\`='MAINTENANCE_KEY' LIMIT 1"
 
     mkdir -p /var/www/backup/cron
-    echo "*/5 * * * *   root  /usr/bin/wget -O /dev/null -o /dev/null http://nginx/maint/?key=$MAINTENANCE_KEY" > /var/www/backup/cron/cms-maintenance
+    echo "*/5 * * * *   root  /usr/bin/wget -O /dev/null -o /dev/null http://ds.${DOMAIN}/maintenance.php?key=${MAINTENANCE_KEY}" > /var/www/backup/cron/cms-maintenance
     
     # Remove the installer
     echo "Removing the installer"
@@ -114,7 +113,7 @@ then
   /usr/sbin/groupadd ssmtp
   
   # Ensure there's a crontab for maintenance
-  echo "*/5 * * * * wget -q -O /dev/null http://ds.${DOMAIN}/maintenance.php?key=${MAINTENANCE_KEY}" > /etc/cron.d/cms-maintenance
+  cp /var/www/backup/cron/cms-maintenance /etc/cron.d/cms-maintenance
   
 fi
 
