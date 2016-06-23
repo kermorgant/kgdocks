@@ -1,0 +1,15 @@
+version: '1'
+services:
+  osticket:
+    build: .
+    command: php -S 0.0.0.0:8000 -t /code/wordpress/
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    volumes:
+      - .:/code
+  db:
+    image: mariadb:10
+    environment:
+      MYSQL_ROOT_PASSWORD: aydattachUtJa

@@ -1,0 +1,28 @@
+version: '2'
+services:
+
+  postgres:
+    env_file: 
+      - /etc/docker/common.env
+      - /etc/docker/postgres.env
+  
+  mariadb:
+    env_file: /etc/docker/mariadb.env
+
+  nginx:
+    env_file: 
+      - /etc/docker/nginx.env
+    build:
+      dockerfile: Dockerfile-prod
+    volumes:
+      - ${PREVIEW_SITE_PATH}:/var/www/preview.${DOMAIN}:ro
+
+  redmine:
+    env_file:
+      - /etc/docker/common.env
+      - /etc/docker/redmine.env
+
+  xibo:
+    env_file: 
+      - /etc/docker/common.env
+      - /etc/docker/xibo.env

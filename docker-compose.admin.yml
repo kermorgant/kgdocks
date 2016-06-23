@@ -1,0 +1,30 @@
+version: '2'
+
+services:
+  backup:
+    container_name: backup
+    image: busybox
+    volumes:
+      - odoo-etc:/volumes/odoo-etc
+      - odoo-addons:/volumes/odoo-addons
+      - odoo-var:/volumes/odoo-var      
+      - pgstore:/volumes/pgstore      
+      - mariadbstore:/volumes/mariadbstore      
+      - openvpndata:/volumes/openvpndata
+      - xibodata:/volumes/xibodata
+      - redminedata:/volumes/redminedata
+      - bookeddata:/volumes/bookeddata
+      - ./backup:/backup
+    command: tar -cvzf  /backup/vps-volumes-back.tgz /volumes
+
+  openvpn:
+    container_name: openvpn
+    build: openvpn
+    ports:
+      - 1194:1194
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - openvpndata:/etc/openvpn
+    networks:
+      - back

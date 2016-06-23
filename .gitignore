@@ -1,0 +1,4 @@
+*.priv.env
+*.swp
+*-swp
+backup/*

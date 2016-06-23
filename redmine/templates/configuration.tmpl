@@ -1,0 +1,12 @@
+production:
+  # Outgoing emails configuration (see examples above)
+  email_delivery:
+    delivery_method: :smtp
+    smtp_settings:
+      ssl: true
+      address: "{{SMTP_SERVER}}"
+      port: '465'
+      domain: "{{DOMAIN}}"
+      authentication: :login
+      user_name: "{{USERNAME}}"
+      password: "{{PASSWORD}}"

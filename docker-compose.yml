@@ -1,0 +1,183 @@
+version: '2'
+
+volumes:
+  odoo-etc:
+    external: true
+  odoo-addons:
+    external: true
+  odoo-var:
+    external: true
+  pgstore:
+    external: true
+  mariadbstore:
+    external: true
+  openvpndata:
+    external: true
+  xibodata:
+    external: true
+  redminedata:
+    external: true
+  bookeddata:
+    external: true
+
+networks:
+  front:
+    external: true
+  back:
+    external: true
+
+services:
+  nginx:
+    container_name: nginx
+    build: nginx
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /etc/ssl:/etc/ssl:ro
+      - xibodata:/var/www/xibo:ro
+      - bookeddata:/var/www/booked:ro
+    ports:
+      - "443:443"
+      - "80:80"
+    command: nginx
+    networks:
+      - front
+    depends_on:
+      - odoo
+      - redmine
+      - xibo
+      - syslog
+      - booked
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://localhost:514 
+        tag: nginx
+        
+  xibo:
+    container_name: xibo
+    build: xibo
+    networks:
+      - front
+      - back
+    volumes:
+      - ./xibo/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./xibo/php.ini:/usr/local/etc/php/php.ini
+      - xibodata:/var/www/xibo
+    links:
+      - mariadb
+#    logging:
+#      driver: syslog
+#      options:
+#        syslog-address: udp://localhost:514 
+#        tag: xibo
+  booked:
+    container_name: booked
+    build: booked
+    networks:
+      - front
+      - back
+    volumes:
+      - ./xibo/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./xibo/php.ini:/usr/local/etc/php/php.ini
+      - bookeddata:/var/www/booked
+    links:
+      - mariadb
+      
+  osticket:
+    container_name: osticket
+    build: osticket
+    networks:
+      - front
+      - back
+    expose:
+      - 9000
+    links:
+      - mariadb:mysql
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://localhost:514 
+        tag: osticket      
+      
+  mariadb:
+    container_name: mariadb
+    build: mariadb
+    expose:
+      - "3306"
+    volumes:
+      - mariadbstore:/var/lib/mysql
+    networks:
+      - back
+    depends_on:
+      - syslog      
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://localhost:514 
+        tag: mariadb
+        
+  odoo:
+    container_name: odoo
+    build: odoo
+    depends_on:
+      - postgres
+    links:
+      - postgres:db
+    expose:
+      - "8069"
+    volumes:
+      - odoo-etc:/etc/odoo
+      - odoo-addons:/mnt/extra-addons
+      - odoo-var:/var/lib/odoo
+    networks:
+      - front
+      - back
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://localhost:514 
+        tag: odoo
+
+  redmine:
+    container_name: redmine
+    build: redmine
+    networks:
+      - front
+      - back
+    expose:
+      - "3000"
+    volumes:
+      - redminedata:/usr/src/redmine/files
+    depends_on:
+      - postgres
+#    logging:
+#      driver: syslog
+#      options:
+#        syslog-address: udp://localhost:514 
+#        tag: redmine
+
+  postgres:
+    container_name: postgres
+    build: postgres
+    volumes:
+      - pgstore:/dbdata
+    expose:
+      - "5432"
+    networks:
+      - back
+    depends_on:
+      - syslog         
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://localhost:514 
+        tag: postgres
+
+  syslog:
+    container_name: syslog
+    build: syslog
+    networks:
+      - front
+    ports:
+      - "localhost:514:514/udp"
+
