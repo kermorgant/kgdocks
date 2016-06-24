@@ -27,9 +27,10 @@ then
   if [ -d /var/www/xibo/cache ]
   then
     rm -r /var/www/xibo/cache
-  fi
-
-  tar --strip=1 -zxf /var/www/xibo-cms.tar.gz -C /var/www/xibo --exclude=settings.php
+  fi 
+  
+  curl -SL https://github.com/xibosignage/xibo-cms/archive/${XIBO_VERSION}.tar.gz \
+  | tar -xzC /var/www/xibo --exclude=settings.php --strip=1
 
   chown www-data.www-data -R /var/www/xibo
 

@@ -64,6 +64,7 @@ services:
     volumes:
       - ./xibo/php-fpm.conf:/usr/local/etc/php-fpm.conf
       - ./xibo/php.ini:/usr/local/etc/php/php.ini
+      - ./xibo/backup:/var/www/backup
       - xibodata:/var/www/xibo
     links:
       - mariadb

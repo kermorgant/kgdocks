@@ -3,15 +3,16 @@ MAINTAINER Mikael Kermorgant <mikael.kermorgant@gmail.com>
 ENV REFRESHED_AT 2016-06-24
 
 RUN apt-get update && apt-get install -y \
-	ssmtp \
-	wget \
-	anacron \
-        mysql-client \
-        libpng-dev \
-        libcurl4-gnutls-dev \
-        libmcrypt-dev \
-        libicu-dev \
-        libxml2-dev  \
+    ssmtp \
+    wget \
+    anacron \
+    mysql-client \
+    libpng-dev \
+    libcurl4-gnutls-dev \
+    libmcrypt-dev \
+    libicu-dev \
+    libxml2-dev  \
+    curl \
     && docker-php-ext-install gd curl \
     && docker-php-ext-install iconv mcrypt \
     && docker-php-ext-install pdo pdo_mysql \
@@ -20,11 +21,10 @@ RUN apt-get update && apt-get install -y \
 
 ENV XIBO_VERSION=1.7.7
 
-ADD php.ini /usr/local/etc/php/php.ini
-ADD https://github.com/xibosignage/xibo-cms/archive/${XIBO_VERSION}.tar.gz /var/www/xibo-cms.tar.gz
-ADD wait-for-it.sh  /usr/local/bin/wait-for-it.sh
-ADD settings.php-template /tmp/settings.php-template
-ADD ssmtp.conf /etc/ssmtp/ssmtp.conf
+COPY php.ini /usr/local/etc/php/php.ini
+COPY wait-for-it.sh  /usr/local/bin/wait-for-it.sh
+COPY settings.php-template /tmp/settings.php-template
+COPY ssmtp.conf /etc/ssmtp/ssmtp.conf
 
 RUN mkdir -p /var/www/xibo
 RUN mkdir -p /var/www/backup
