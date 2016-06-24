@@ -98,7 +98,7 @@ then
     mysql -D $DB_NAME -u $DB_XIBO_USER -p$DB_XIBO_PASSWORD -h mariadb -e "UPDATE \`setting\` SET \`value\`='$MAINTENANCE_KEY' WHERE \`setting\`='MAINTENANCE_KEY' LIMIT 1"
 
     mkdir -p /var/www/backup/cron
-    echo "*/5 * * * *   root  /usr/bin/wget -O /dev/null -o /dev/null http://ds.${DOMAIN}/maintenance.php?key=${MAINTENANCE_KEY}" > /var/www/backup/cron/cms-maintenance
+    echo "*/5 * * * *   root  /usr/bin/wget -O /dev/null -o /dev/null http://ds.${DOMAIN}/maintenance.php?key=$MAINTENANCE_KEY" > /var/www/backup/cron/cms-maintenance
     
     # Remove the installer
     echo "Removing the installer"
