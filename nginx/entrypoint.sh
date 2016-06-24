@@ -20,9 +20,10 @@ echo "Waiting for odoo to start - max 300 seconds"
 if [ ! "$?" == 0 ]
 then
   echo "odoo didn't start in the allocated time"
+else
+  echo "odoo started"
 fi
 # Safety sleep to give odoo a moment to settle after coming up
-echo "odoo started"
 sleep 1
 
 # Sleep for a few seconds to give redmine time to start
@@ -32,9 +33,9 @@ echo "Waiting for redmine to start - max 30 seconds"
 if [ ! "$?" == 0 ]
 then
   echo "redmine didn't start in the allocated time"
+else
+  echo "redmine started"
 fi
-
-echo "redmine started"
 
 # Sleep for a few seconds to give php/xibo time to start
 echo "Waiting for php-fpm for xibo to start - max 30 seconds"
@@ -43,9 +44,9 @@ echo "Waiting for php-fpm for xibo to start - max 30 seconds"
 if [ ! "$?" == 0 ]
 then
   echo "php-fpm for xibo didn't start in the allocated time"
+else
+  echo "php-fpm for xibo started"
 fi
-
-echo "php-fpm for xibo started"
 
 echo "Starting nginx"
 exec "$@"
