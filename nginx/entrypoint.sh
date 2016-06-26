@@ -7,10 +7,13 @@ then
   sed -i "s/#SERVER_NAME#/booked.${DOMAIN}/" /etc/nginx/conf.d/booked.conf
   sed -i "s/#SERVER_NAME#/help.${DOMAIN}/" /etc/nginx/conf.d/osticket.conf
   sed -i "s/#SERVER_NAME#/redmine.${DOMAIN}/" /etc/nginx/conf.d/redmine.conf
+  sed -i "s/#SSL_CA_PATH#/${SSL_CA_PATH}/" /etc/nginx/conf.d/redmine.conf  
   sed -i "s/#SERVER_NAME#/erp.${DOMAIN}/" /etc/nginx/conf.d/global.conf
   sed -i "s/#SSL_CA_PATH#/${SSL_CA_PATH}/" /etc/nginx/conf.d/global.conf
   sed -i "s/#SERVER_NAME#/tunnel.${DOMAIN}/" /etc/nginx/conf.d/tunnel.conf
   sed -i "s/#TUNNEL_BACKEND#/${TUNNEL_BACKEND}/" /etc/nginx/conf.d/tunnel.conf
+  sed -i "s/#SSL_CA_PATH#/${SSL_CA_PATH}/" /etc/nginx/conf.d/tunnel.conf  
+  
 fi
 
 # Sleep for a few seconds to give odoo time to start
