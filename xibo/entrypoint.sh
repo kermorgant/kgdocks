@@ -9,12 +9,13 @@ function dl_xibo {
   mkdir /var/www/xibo/cache
   mkdir -p /var/www/xibo/library/temp
   chown www-data.www-data -R /var/www/xibo/cache /var/www/xibo/library
+  echo $XIBO_VERSION > /var/www/xibo/xibo_release.txt      
 }
 
 # Detect if we're going to run an install or upgrade
 if [ -e "/CMS-FLAG" ]
 then
-  if [ -e "/var/www/xibo/xibo_release.txt" && $XIBO_VERSION !=  $(cat "/var/www/xibo/xibo_release.txt") ]
+  if [[ -e "/var/www/xibo/xibo_release.txt" && $XIBO_VERSION !=  $(cat "/var/www/xibo/xibo_release.txt") ]]
   then
     echo "Upgrade needed"
     # Run a database backup
@@ -28,12 +29,11 @@ then
     mv /var/www/xibo/settings.php /tmp/settings.php
     
     # Delete the old install EXCEPT the library directory
-    find /var/www/xibo ! -name library -type d -exec rm -rf {} \;
-    find /var/www/xibo -type f -maxdepth 1 -exec rm -f {} \;
+    find /var/www/xibo ! -name library          -type d             -exec rm -rf {} \;
+    find /var/www/xibo ! -name xibo_release.txt -type f -maxdepth 1 -exec rm -f  {} \;
 
     # Replace settings
-    mv /tmp/settings.php /var/www/xibo/settings.php
-    
+    mv /tmp/settings.php /var/www/xibo/settings.php    
     dl_xibo
   fi
   
@@ -130,8 +130,7 @@ then
   /usr/sbin/groupadd ssmtp
   
   # Ensure there's a crontab for maintenance
-  cp /var/www/backup/cron/cms-maintenance /etc/cron.d/cms-maintenance
-  
+  cp /var/www/backup/cron/cms-maintenance /etc/cron.d/cms-maintenance  
 fi
 
 # Configure SSMTP to send emails if required

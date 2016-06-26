@@ -19,7 +19,7 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install mysql soap gettext calendar zip \
     && docker-php-ext-install intl
 
-ENV XIBO_VERSION=1.7.7
+ENV XIBO_VERSION=1.7.8
 
 COPY php.ini /usr/local/etc/php/php.ini
 COPY wait-for-it.sh  /usr/local/bin/wait-for-it.sh
