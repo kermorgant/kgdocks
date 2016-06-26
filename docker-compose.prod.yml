@@ -11,6 +11,7 @@ services:
 
   nginx:
     env_file: 
+      - /etc/docker/common.env
       - /etc/docker/nginx.env
     build:
       dockerfile: Dockerfile-prod
