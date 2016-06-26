@@ -3,8 +3,10 @@ MAINTAINER Mikael Kermorgant <mikael.kermorgant@gmail.com>
 ENV REFRESHED_AT 2016-04-09
 
 RUN mkdir -p /var/www/html
+RUN rm -f /etc/nginx/conf.d/*
+
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY conf-dev.d/global.conf /etc/nginx/conf.d/default.conf
+COPY conf-dev.d/odoo.conf /etc/nginx/conf.d/odoo.conf
 COPY conf-dev.d/redmine.conf /etc/nginx/conf.d/redmine.conf
 COPY conf-dev.d/ds.conf /etc/nginx/conf.d/ds.conf
 COPY conf-dev.d/booked.conf /etc/nginx/conf.d/booked.conf
