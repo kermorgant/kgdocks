@@ -4,7 +4,7 @@ ENV REFRESHED_AT 2016-06-20
 
 RUN apt-get update && apt-get install -y \
     ssmtp \
-    wget curl \
+    curl \
     anacron \
     mysql-client \
     libcurl4-gnutls-dev \
@@ -17,15 +17,14 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install gd curl \
     && docker-php-ext-install iconv mcrypt \
     && docker-php-ext-install pdo pdo_mysql mysqli \
-    && docker-php-ext-install mysql soap gettext calendar zip \
+    && docker-php-ext-install mysql soap gettext calendar \
     && docker-php-ext-install intl mysqli
 
 ENV BOOKED_VERSION=2.5.20
 
-ADD wait-for-it.sh /usr/local/bin/wait-for-it.sh
-ADD config.php /tmp/config.php-template
+COPY wait-for-it.sh /usr/local/bin/wait-for-it.sh
+COPY config.php /tmp/config.php-template
 
-ADD http://downloads.sourceforge.net/project/phpscheduleit/Booked/2.5/booked-${BOOKED_VERSION}.zip /var/www/booked.zip
 RUN mkdir -p /var/www/booked
 
 VOLUME /var/www/booked

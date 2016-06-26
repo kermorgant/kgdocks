@@ -42,9 +42,13 @@ shift $((OPTIND -1))
 subcommand=$1; shift  # Remove 'compose.sh' from the argument list
 case "$subcommand" in
   # Parse options to the install sub command
+  pull)
+    service=$1; shift  # Remove 'build' from the argument list
+    command="$cmdprefix sudo -E docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml pull $service"  
+    ;;
   build)
     service=$1; shift  # Remove 'build' from the argument list
-    command="sudo docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml build --pull $service"
+    command="$cmdprefix sudo -E docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml build --pull $service"
     ;;
   up)
     # Process package options

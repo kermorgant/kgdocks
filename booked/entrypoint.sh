@@ -18,6 +18,8 @@ then
     mv /tmp/config.php /var/www/booked/config/config.php
     
   fi
+  
+  curl -SL http://downloads.sourceforge.net/project/phpscheduleit/Booked/2.5/booked-${BOOKED_VERSION}.zip /var/www/booked.zip
   unzip -d "/var/www/booked" "/var/www/booked.zip" && f=(/var/www/booked/*) && mv /var/www/booked/*/* /var/www/booked && rmdir "${f[@]}"
   
   # if we have a backup of uploads, restore it
