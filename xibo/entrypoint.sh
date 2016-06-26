@@ -14,7 +14,7 @@ function dl_xibo {
 # Detect if we're going to run an install or upgrade
 if [ -e "/CMS-FLAG" ]
 then
-  if [ -e "/var/www/xibo/xibo_release.txt" && $XIBO_VERSION !=  $(cat "/var/www/xibo/xibo_release.txt") ]
+  if [[ -e "/var/www/xibo/xibo_release.txt" && $XIBO_VERSION !=  $(cat "/var/www/xibo/xibo_release.txt") ]]
   then
     echo "Upgrade needed"
     # Run a database backup
