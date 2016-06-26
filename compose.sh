@@ -44,7 +44,7 @@ case "$subcommand" in
   # Parse options to the install sub command
   build)
     service=$1; shift  # Remove 'build' from the argument list
-    command="sudo docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml build $service"
+    command="sudo docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml build --pull $service"
     ;;
   up)
     # Process package options
