@@ -1,19 +1,18 @@
 FROM nginx:stable
 MAINTAINER Mikael Kermorgant <mikael.kermorgant@gmail.com>
 ENV REFRESHED_AT 2016-04-09
-RUN apt-get update
+
 RUN mkdir -p /var/www/html
-ADD nginx.conf /etc/nginx/nginx.conf
-ADD conf-dev.d/global.conf /etc/nginx/conf.d/default.conf
-ADD conf-dev.d/redmine.conf /etc/nginx/conf.d/redmine.conf
-ADD conf-dev.d/ds.conf /etc/nginx/conf.d/ds.conf
-ADD conf-dev.d/booked.conf /etc/nginx/conf.d/booked.conf
-ADD conf-dev.d/odoo.conf /etc/nginx/conf.d/odoo.conf
-ADD wait-for-it.sh /usr/local/bin/wait-for-it.sh
-
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY conf-dev.d/global.conf /etc/nginx/conf.d/default.conf
+COPY conf-dev.d/redmine.conf /etc/nginx/conf.d/redmine.conf
+COPY conf-dev.d/ds.conf /etc/nginx/conf.d/ds.conf
+COPY conf-dev.d/booked.conf /etc/nginx/conf.d/booked.conf
+COPY conf-dev.d/odoo.conf /etc/nginx/conf.d/odoo.conf
+COPY wait-for-it.sh /usr/local/bin/wait-for-it.sh
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh /usr/local/bin/wait-for-it.sh
 
+RUN chmod +x /entrypoint.sh /usr/local/bin/wait-for-it.sh
 RUN ln -sf /proc/1/fd/1 /var/log/nginx/access.log
 RUN ln -sf /proc/1/fd/2 /var/log/nginx/error.log
 
