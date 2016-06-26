@@ -1,10 +1,22 @@
 #!/bin/bash
 
-# Detect if we're going to run an upgrade
+function dl_xibo {
+  curl -SL https://github.com/xibosignage/xibo-cms/archive/${XIBO_VERSION}.tar.gz \
+  | tar -xzC /var/www/xibo --exclude=settings.php --strip=1
+
+  chown www-data.www-data -R /var/www/xibo
+
+  mkdir /var/www/xibo/cache
+  mkdir -p /var/www/xibo/library/temp
+  chown www-data.www-data -R /var/www/xibo/cache /var/www/xibo/library
+}
+
+# Detect if we're going to run an install or upgrade
 if [ -e "/CMS-FLAG" ]
 then
-  if [ -e "/var/www/xibo/settings.php" ]
+  if [ -e "/var/www/xibo/xibo_release.txt" && $XIBO_VERSION !=  $(cat "/var/www/xibo/xibo_release.txt") ]
   then
+    echo "Upgrade needed"
     # Run a database backup
     dbuser=$(awk -F "'" '/dbuser =/ {print $2}' /var/www/xibo/settings.php)
     dbpass=$(awk -F "'" '/dbpass =/ {print $2}' /var/www/xibo/settings.php)
@@ -21,31 +33,35 @@ then
 
     # Replace settings
     mv /tmp/settings.php /var/www/xibo/settings.php
+    
+    dl_xibo
   fi
   
   # Drop the CMS cache (if it exists)
-  if [ -d /var/www/xibo/cache ]
-  then
-    rm -r /var/www/xibo/cache
-  fi 
+#   if [ -d /var/www/xibo/cache ]
+#   then
+#     rm -r /var/www/xibo/cache
+#   fi 
+#   
+#   curl -SL https://github.com/xibosignage/xibo-cms/archive/${XIBO_VERSION}.tar.gz \
+#   | tar -xzC /var/www/xibo --exclude=settings.php --strip=1
+# 
+#   chown www-data.www-data -R /var/www/xibo
+# 
+#   mkdir /var/www/xibo/cache
+#   mkdir -p /var/www/xibo/library/temp
+#   chown www-data.www-data -R /var/www/xibo/cache /var/www/xibo/library
   
-  curl -SL https://github.com/xibosignage/xibo-cms/archive/${XIBO_VERSION}.tar.gz \
-  | tar -xzC /var/www/xibo --exclude=settings.php --strip=1
-
-  chown www-data.www-data -R /var/www/xibo
-
-  mkdir /var/www/xibo/cache
-  mkdir -p /var/www/xibo/library/temp
-  chown www-data.www-data -R /var/www/xibo/cache /var/www/xibo/library
-  
-  if [ ! -e "/var/www/xibo/settings.php" ]
+  if [ ! -e "/var/www/xibo/xibo_release.txt" ]
   then
     # This is a fresh install so bootstrap the whole
     # system
     echo "New install"
-    mkdir -p /var/www/xibo/cache
-    mkdir -p /var/www/xibo/library/temp
-    chown www-data.www-data -R /var/www/xibo/cache /var/www/xibo/library
+#     mkdir -p /var/www/xibo/cache
+#     mkdir -p /var/www/xibo/library/temp
+#     chown www-data.www-data -R /var/www/xibo/cache /var/www/xibo/library
+  
+    dl_xibo
     
     # Sleep for a few seconds to give MySQL time to initialise
     echo "Waiting for MySQL to start - max 300 seconds"
