@@ -1,9 +1,9 @@
-FROM voxxit/base:alpine
+# FROM voxxit/base:alpine
 
-MAINTAINER Joshua Delsman <j (at) srv.im>
+FROM alpine:3.3
+MAINTAINER Mikael Kermorgant <mikael.kermorgant@gmail.com>
 
-RUN  apk add --update rsyslog \
-  && rm -rf /var/cache/apk/*
+RUN  apk add --no-cache rsyslog
 
 EXPOSE 514 514/udp
 
