@@ -4,7 +4,7 @@ environments=(dev prod)
 
 if [ ! -f docker.priv.env ]
 then
-  echo "docker.env file missing. Please create one"
+  echo "docker.priv.env file missing. Please create one"
   exit 1
 fi
 
