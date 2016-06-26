@@ -3,7 +3,7 @@
 FROM alpine:3.3
 MAINTAINER Mikael Kermorgant <mikael.kermorgant@gmail.com>
 
-RUN  apk add --no-cache rsyslog
+RUN  apk add --no-cache rsyslog bash
 
 EXPOSE 514 514/udp
 
