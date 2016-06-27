@@ -29,8 +29,6 @@ services:
       - ./redmine/redmine.env  
 
   xibo:
-    volumes:
-      - ./php/php-fpm.conf:/etc/php5/fpm/php-fpm.conf  
     env_file: 
       - common.priv.env
       - ./xibo/xibo.env

@@ -32,8 +32,8 @@ fi
 sleep 1
 
 # Sleep for a few seconds to give redmine time to start
-echo "Waiting for redmine to start - max 30 seconds"
-/usr/local/bin/wait-for-it.sh -q -t 30 redmine:300
+echo "Waiting for redmine to start - max 60 seconds"
+/usr/local/bin/wait-for-it.sh -q -t 60 redmine:300
     
 if [ ! "$?" == 0 ]
 then

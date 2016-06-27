@@ -28,3 +28,13 @@ services:
       - openvpndata:/etc/openvpn
     networks:
       - back
+
+  letsencrypt:
+    container_name: letsencrypt
+    image: quay.io/letsencrypt/letsencrypt:latest
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+      - /var/lib/letsencrypt:/var/lib/letsencrypt      
