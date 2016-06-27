@@ -46,10 +46,12 @@ case "$subcommand" in
     service=$1; shift  # Remove 'build' from the argument list
     command="$cmdprefix sudo -E docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml pull $service"  
     ;;
+    
   build)
     service=$1; shift  # Remove 'build' from the argument list
     command="$cmdprefix sudo -E docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml build --pull $service"
     ;;
+    
   up)
     # Process package options
     while getopts ":d:" opt; do
@@ -82,6 +84,7 @@ case "$subcommand" in
     command="$cmdprefix sudo -E docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml up -d $service"
     echo $command    
     ;;
+    
   stop)
     if [ ! -z $1 ]
     then
@@ -92,13 +95,31 @@ case "$subcommand" in
     command="$cmdprefix sudo -E docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml stop $service"
     echo $command    
     ;;    
+    
   openvpn)  
     command="$cmdprefix sudo -E docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml -f docker-compose.admin.yml up -d openvpn"
     ;;
+    
   backup)
     echo "Performing backup  of docker volumes in /backup" 
     command="$cmdprefix sudo -E docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml -f docker-compose.admin.yml run --rm backup"
-    ;;    
+    ;;
+    
+  exec-bash)
+    if [ -z $1 ]
+    then
+      echo "Missing option : exec-bash requires an argument (the service)"
+      exit 1
+    else
+      service=$1; shift
+      command="$cmdprefix sudo -E docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml exec $service /bin/bash"
+      echo $command
+    fi  
+    ;;
+    
+    sslrenew)  
+    command="$cmdprefix sudo -E docker-compose -f ./docker-compose.yml -f docker-compose.$ENV.yml -f docker-compose.admin.yml run --rm letsencrypt renew"
+    ;;
 esac
 
 $command

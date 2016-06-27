@@ -57,7 +57,7 @@ services:
         
   xibo:
     container_name: xibo
-    build: xibo
+    image: kgtech/xibo17-docker
     networks:
       - front
       - back
