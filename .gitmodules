@@ -1,0 +1,3 @@
+[submodule "xibo"]
+	path = xibo
+	url = git@github.com:kermorgant/xibo17-docker.git
