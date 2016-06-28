@@ -52,6 +52,26 @@ case "$1" in
 		# remove PID file to enable restarting the container
 		rm -f /usr/src/redmine/tmp/pids/server.pid
 		
+    if [ ! -d /usr/src/redmine/plugins/redmine_ics_export ]
+    then
+      echo "here"
+      cd /usr/src/redmine/plugins
+      git clone https://github.com/buschmais/redmics.git redmine_ics_export
+      cd /usr/src/redmine
+      bundle install --without development test
+      rake redmine:plugins:migrate RAILS_ENV=production
+    fi	
+    
+    if [ ! -d /usr/src/redmine/plugins/redmine_omniauth_google ]
+    then
+      echo "here2"
+      cd /usr/src/redmine/plugins
+      git clone https://github.com/twinslash/redmine_omniauth_google.git
+      cd /usr/src/redmine
+      bundle install --without development test
+      rake redmine:plugins:migrate RAILS_ENV=production
+    fi    
+		
 		if [ "$1" = 'passenger' ]; then
 			# Don't fear the reaper.
 			set -- tini -- "$@"
@@ -60,6 +80,9 @@ case "$1" in
 		set -- gosu redmine "$@"
 		;;
 esac
+
+
+
 
 exec "$@"
 
