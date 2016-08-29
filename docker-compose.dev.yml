@@ -42,3 +42,10 @@ services:
     environment:
       - MYSQL_PASSWORD=secret
       - MYSQL_USER=root
+
+  jenkins:
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./jenkins/php.dev.ini:/usr/local/etc/php/php.ini      
+      - ./jenkins/php.dev-noxdebug.ini:/usr/local/etc/php/php-noxdebug.ini             

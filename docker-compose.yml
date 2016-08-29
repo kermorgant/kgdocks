@@ -184,3 +184,8 @@ services:
     ports:
       - "localhost:514:514/udp"
 
+  jenkins:
+    container_name: paroisse_jenkins
+    image: kgtech/jenkins-docker
+    expose:
+      - "8080"    
