@@ -14,6 +14,8 @@ then
   sed -i "s/#SERVER_NAME#/tunnel.${DOMAIN}/" /etc/nginx/conf.d/tunnel.conf
   sed -i "s/#TUNNEL_BACKEND#/${TUNNEL_BACKEND}/" /etc/nginx/conf.d/tunnel.conf
   sed -i "s/#SSL_CA_PATH#/${SSL_CA_PATH}/" /etc/nginx/conf.d/tunnel.conf  
+  sed -i "s/#SERVER_NAME#/jenkins.${DOMAIN}/" /etc/nginx/conf.d/jenkins.conf
+  sed -i "s/#SSL_CA_PATH#/${SSL_CA_PATH}/" /etc/nginx/conf.d/jenkins.conf
   
   rm -f /INSTALL-FLAG
 fi
@@ -52,6 +54,18 @@ then
 else
   echo "php-fpm for xibo started"
 fi
+
+# Sleep for a few seconds to give jenkins time to start
+echo "Waiting for jenkins to start - max 30 seconds"
+/usr/local/bin/wait-for-it.sh -q -t 30 jenkins:8080
+    
+if [ ! "$?" == 0 ]
+then
+  echo "jenkins didn't start in the allocated time"
+else
+  echo "jenkins started"
+fi
+
 
 echo "Starting nginx"
 exec "$@"
