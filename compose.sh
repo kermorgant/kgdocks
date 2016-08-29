@@ -28,6 +28,7 @@ while getopts ":h" opt; do
       echo "    ./compose.sh stop service		Stops specified service"      
       echo "    ./compose.sh openvpn		Runs the openvpn service as a daemon"
       echo "    ./compose.sh backup			Performs a backup of the volumes listed in docker-compose.admin.yml"
+      echo "    ./compose.sh exec-bash service  Opens a bash shell inside a running container"
       exit 0
       ;;
     \? )

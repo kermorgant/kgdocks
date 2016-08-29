@@ -25,14 +25,14 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
         libicu-dev \
         libssl-dev \
         libc-client2007e-dev \
+        libkrb5-dev \
+    && rm -rf /var/lib/apt/lists/* \
     && docker-php-ext-install gd curl \
     && docker-php-ext-install iconv mcrypt \
     && docker-php-ext-install mysql pdo pdo_mysql\
-    && docker-php-ext-install soap gettext calendar zip 
-#    && rm -rf /var/lib/apt/lists/*
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y libkrb5-dev
-RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
-    && docker-php-ext-install imap
+    && docker-php-ext-install soap gettext calendar zip \
+    && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
+    && docker-php-ext-install imap \
 
 # Download & install OSTicket
 RUN wget -nv -O osTicket.zip http://osticket.com/sites/default/files/download/osTicket-v${OSTICKET_VERSION}.zip && \
