@@ -51,6 +51,7 @@ services:
       - xibo
       - syslog
       - booked
+      - jenkins
     logging:
       driver: syslog
       options:
