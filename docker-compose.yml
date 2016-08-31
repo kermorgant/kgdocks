@@ -19,7 +19,9 @@ volumes:
     external: true
   bookeddata:
     external: true
-
+  jenkinsdata:
+    external: true
+    
 networks:
   front:
     external: true
@@ -188,4 +190,6 @@ services:
     container_name: paroisse_jenkins
     image: kgtech/jenkins-docker
     expose:
-      - "8080"    
+      - "8080"
+    volumes:
+      - jenkinsdata:/jenkins
