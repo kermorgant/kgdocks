@@ -1,9 +1,9 @@
 production:
-    adapter: 'postgresql'
+    adapter: 'mysql2'
     database: '{{ .Env "DB" }}'
-    host: 'postgres'
+    host: 'mariadb'
     username: '{{ .Env "DB_USER" }}'
     password: '{{ .Env "DB_PASSWORD" }}'
     encoding: utf8
-    port: 5432
+    port: 3306
 

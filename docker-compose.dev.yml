@@ -26,8 +26,12 @@ services:
   redmine-legacy:
     env_file: 
       - common.priv.env    
-      - ./redmine-legacy/redmine.env  
+      - ./redmine-legacy/redmine.env
 
+  redmine:
+    env_file: 
+      - common.priv.env    
+      - ./redmine/redmine.env        
   xibo:
     env_file: 
       - common.priv.env

@@ -51,9 +51,11 @@ services:
       front:
         aliases:
           - ds.${DOMAIN}
+          - support.${DOMAIN}
     depends_on:
       - odoo
       - redmine-legacy
+      - redmine
       - xibo
       - syslog
       - booked
@@ -182,7 +184,7 @@ services:
     volumes:
       - redminedata:/usr/src/redmine/files
     depends_on:
-      - postgres
+      - mariadb
     logging:
       driver: syslog
       options:

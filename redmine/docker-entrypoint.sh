@@ -1,22 +1,26 @@
 #!/bin/bash
 set -e
 
+
+if [ -f ./config/configuration.tmpl ]
+then
+  sed -i -e"s/{{SMTP_SERVER}}/${SMTP_SERVER}/" ./config/configuration.tmpl
+  sed -i -e"s/{{DOMAIN}}/${DOMAIN}/" ./config/configuration.tmpl
+  sed -i -e"s/{{USERNAME}}/${SMTP_USERNAME}/" ./config/configuration.tmpl
+  sed -i -e"s/{{PASSWORD}}/${SMTP_PASSWORD}/" ./config/configuration.tmpl
+  mv ./config/configuration.tmpl ./config/configuration.yml
+fi
+
 case "$1" in
 	rails|rake|passenger)
 		if [ ! -f './config/database.yml' ]; then
-			if [ "$MYSQL_PORT_3306_TCP" ]; then
-				: "${REDMINE_DB_MYSQL:=mysql}"
-			elif [ "$POSTGRES_PORT_5432_TCP" ]; then
-				: "${REDMINE_DB_POSTGRES:=postgres}"
-			fi
-			
-			if [ "$REDMINE_DB_MYSQL" ]; then
+			if [ "$DB_TYPE_MYSQL" ]; then
 				adapter='mysql2'
-				host="$REDMINE_DB_MYSQL"
+				host="$DB_HOST"
 				: "${REDMINE_DB_PORT:=3306}"
-				: "${REDMINE_DB_USERNAME:=${MYSQL_ENV_MYSQL_USER:-root}}"
-				: "${REDMINE_DB_PASSWORD:=${MYSQL_ENV_MYSQL_PASSWORD:-${MYSQL_ENV_MYSQL_ROOT_PASSWORD:-}}}"
-				: "${REDMINE_DB_DATABASE:=${MYSQL_ENV_MYSQL_DATABASE:-${MYSQL_ENV_MYSQL_USER:-redmine}}}"
+				: "${REDMINE_DB_USERNAME:=${DB_USER:-root}}"
+				: "${REDMINE_DB_PASSWORD:=${DB_PASSWORD}}"
+				: "${REDMINE_DB_DATABASE:=${DB}}}"
 				: "${REDMINE_DB_ENCODING:=}"
 			fi
 			
@@ -60,6 +64,24 @@ case "$1" in
 		
 		# remove PID file to enable restarting the container
 		rm -f /usr/src/redmine/tmp/pids/server.pid
+
+		if [ ! -d /usr/src/redmine/plugins/redmine_ics_export ]
+		then
+		    cd /usr/src/redmine/plugins
+		    git clone https://github.com/buschmais/redmics.git redmine_ics_export
+		    cd /usr/src/redmine
+		    bundle install --without development test
+		    rake redmine:plugins:migrate RAILS_ENV=production
+		fi	
+		
+		if [ ! -d /usr/src/redmine/plugins/redmine_omniauth_google ]
+		then
+		    cd /usr/src/redmine/plugins
+		    git clone https://github.com/twinslash/redmine_omniauth_google.git
+		    cd /usr/src/redmine
+		    bundle install --without development test
+		    rake redmine:plugins:migrate RAILS_ENV=production
+		fi    
 		
 		if [ "$1" = 'passenger' ]; then
 			# Don't fear the reaper.
