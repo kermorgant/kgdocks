@@ -39,9 +39,8 @@ services:
       - ./booked/booked.env
 
   osticket:
-    environment:
-      - MYSQL_PASSWORD=secret
-      - MYSQL_USER=root
+    env_file:
+      - ./osticket/osticket.priv.env
 
   jenkins:
     ports:

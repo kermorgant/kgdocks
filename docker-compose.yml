@@ -102,8 +102,10 @@ services:
       - back
     expose:
       - 9000
+    volumes:
+      - osticketdata:/data
     links:
-      - mariadb:mysql
+      - mariadb      
     logging:
       driver: syslog
       options:
