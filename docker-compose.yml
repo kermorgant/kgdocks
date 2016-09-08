@@ -169,6 +169,25 @@ services:
         syslog-address: udp://localhost:514 
         tag: redmine-legacy
 
+  redmine:
+    container_name: redmine
+    build: redmine
+    networks:
+      - front
+      - back
+    expose:
+      - "3000"
+    volumes:
+      - redminelegacydata:/usr/src/redmine/files
+    depends_on:
+      - postgres
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://localhost:514 
+        tag: redmine-legacy
+        
+
   postgres:
     container_name: postgres
     build: postgres
