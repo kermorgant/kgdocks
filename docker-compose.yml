@@ -189,7 +189,7 @@ services:
       driver: syslog
       options:
         syslog-address: udp://localhost:514 
-        tag: redmine-legacy
+        tag: redmine
         
 
   postgres:

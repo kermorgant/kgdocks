@@ -16,11 +16,15 @@ services:
     build:
       dockerfile: Dockerfile-prod
 
-  redmine-legacy:
+  redmine:
     env_file:
       - /etc/docker/common.env
       - /etc/docker/redmine.env
 
+  redmine-legacy:
+    env_file:
+      - /etc/docker/common.env
+      - /etc/docker/redmine-legacy.env      
   xibo:
     env_file: 
       - /etc/docker/common.env
