@@ -21,12 +21,12 @@ services:
     env_file: 
       - ./nginx/nginx.priv.env
     build:
-      dockerfile: Dockerfile-dev      
-
-  redmine:
+      dockerfile: Dockerfile-dev     
+      
+  redmine-legacy:
     env_file: 
       - common.priv.env    
-      - ./redmine/redmine.env  
+      - ./redmine-legacy/redmine.env  
 
   xibo:
     env_file: 

@@ -11,6 +11,8 @@ COPY conf-dev.d/redmine.conf /etc/nginx/conf.d/redmine.conf
 COPY conf-dev.d/ds.conf /etc/nginx/conf.d/ds.conf
 COPY conf-dev.d/booked.conf /etc/nginx/conf.d/booked.conf
 COPY conf-dev.d/odoo.conf /etc/nginx/conf.d/odoo.conf
+COPY conf-dev.d/osticket.conf /etc/nginx/conf.d/osticket.conf
+COPY conf-dev.d/local.conf /etc/nginx/conf.d/local.conf
 COPY wait-for-it.sh /usr/local/bin/wait-for-it.sh
 COPY entrypoint.sh /entrypoint.sh
 

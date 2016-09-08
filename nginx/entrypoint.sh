@@ -10,9 +10,6 @@ then
   sed -i "s/#SSL_CA_PATH#/${SSL_CA_PATH}/" /etc/nginx/conf.d/redmine.conf  
   sed -i "s/#SERVER_NAME#/erp.${DOMAIN}/" /etc/nginx/conf.d/odoo.conf
   sed -i "s/#SSL_CA_PATH#/${SSL_CA_PATH}/" /etc/nginx/conf.d/odoo.conf
-  sed -i "s/#SERVER_NAME#/preview.${DOMAIN}/" /etc/nginx/conf.d/preview.conf
-  sed -i "s/#SERVER_NAME#/tunnel.${DOMAIN}/" /etc/nginx/conf.d/tunnel.conf
-  sed -i "s/#TUNNEL_BACKEND#/${TUNNEL_BACKEND}/" /etc/nginx/conf.d/tunnel.conf
   sed -i "s/#SSL_CA_PATH#/${SSL_CA_PATH}/" /etc/nginx/conf.d/tunnel.conf  
   sed -i "s/#SERVER_NAME#/jenkins.${DOMAIN}/" /etc/nginx/conf.d/jenkins.conf
   sed -i "s/#SSL_CA_PATH#/${SSL_CA_PATH}/" /etc/nginx/conf.d/jenkins.conf
@@ -22,7 +19,7 @@ fi
 
 # Sleep for a few seconds to give odoo time to start
 echo "Waiting for odoo to start - max 300 seconds"
-/usr/local/bin/wait-for-it.sh -q -t 300 odoo:8069
+#/usr/local/bin/wait-for-it.sh -q -t 300 odoo:8069
 
 if [ ! "$?" == 0 ]
 then
@@ -35,7 +32,7 @@ sleep 1
 
 # Sleep for a few seconds to give redmine time to start
 echo "Waiting for redmine to start - max 60 seconds"
-/usr/local/bin/wait-for-it.sh -q -t 60 redmine:300
+#/usr/local/bin/wait-for-it.sh -q -t 60 redmine:300
     
 if [ ! "$?" == 0 ]
 then
@@ -57,7 +54,7 @@ fi
 
 # Sleep for a few seconds to give jenkins time to start
 echo "Waiting for jenkins to start - max 30 seconds"
-/usr/local/bin/wait-for-it.sh -q -t 30 jenkins:8080
+#/usr/local/bin/wait-for-it.sh -q -t 30 jenkins:8080
     
 if [ ! "$?" == 0 ]
 then

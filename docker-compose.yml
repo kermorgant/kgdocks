@@ -21,6 +21,8 @@ volumes:
     external: true
   jenkinsdata:
     external: true
+  osticketdata:
+    external: true 
     
 networks:
   front:
@@ -35,8 +37,10 @@ services:
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - /etc/ssl:/etc/ssl:ro
+      - ./nginx/local:/var/www
       - xibodata:/var/www/xibo:ro
       - bookeddata:/var/www/booked:ro
+      - osticketdata:/var/www/osticket:ro      
     ports:
       - "443:443"
       - "80:80"
@@ -47,11 +51,12 @@ services:
           - ds.${DOMAIN}
     depends_on:
       - odoo
-      - redmine
+      - redmine-legacy
       - xibo
       - syslog
       - booked
       - jenkins
+      - osticket
     logging:
       driver: syslog
       options:
@@ -144,9 +149,9 @@ services:
         syslog-address: udp://localhost:514 
         tag: odoo
 
-  redmine:
-    container_name: redmine
-    build: redmine
+  redmine-legacy:
+    container_name: redmine-legacy
+    build: redmine-legacy
     networks:
       - front
       - back
@@ -160,7 +165,7 @@ services:
       driver: syslog
       options:
         syslog-address: udp://localhost:514 
-        tag: redmine
+        tag: redmine-legacy
 
   postgres:
     container_name: postgres

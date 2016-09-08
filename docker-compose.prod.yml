@@ -15,10 +15,8 @@ services:
       - /etc/docker/nginx.env
     build:
       dockerfile: Dockerfile-prod
-    volumes:
-      - ${PREVIEW_SITE_PATH}:/var/www/preview.${DOMAIN}:ro
 
-  redmine:
+  redmine-legacy:
     env_file:
       - /etc/docker/common.env
       - /etc/docker/redmine.env

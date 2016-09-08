@@ -32,7 +32,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     && docker-php-ext-install mysql pdo pdo_mysql\
     && docker-php-ext-install soap gettext calendar zip \
     && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
-    && docker-php-ext-install imap \
+    && docker-php-ext-install imap
 
 # Download & install OSTicket
 RUN wget -nv -O osTicket.zip http://osticket.com/sites/default/files/download/osTicket-v${OSTICKET_VERSION}.zip && \
@@ -56,7 +56,6 @@ RUN wget -nv -O upload/include/i18n/fr.phar http://osticket.com/sites/default/fi
 ADD supervisord.conf /data/supervisord.conf
 ADD msmtp.conf /data/msmtp.conf
 ADD bin/ /data/bin
-
 
 VOLUME ["/data/upload/include/plugins","/var/log/nginx"]
 EXPOSE 80
