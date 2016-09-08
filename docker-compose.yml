@@ -201,3 +201,5 @@ services:
       - "8080"
     volumes:
       - jenkinsdata:/jenkins
+    networks:
+      - front
