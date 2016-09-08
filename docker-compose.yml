@@ -17,6 +17,8 @@ volumes:
     external: true
   redminelegacydata:
     external: true
+  redminedata:
+    external: true    
   bookeddata:
     external: true
   jenkinsdata:
@@ -160,7 +162,7 @@ services:
     expose:
       - "3000"
     volumes:
-      - redminedata:/usr/src/redmine/files
+      - redminelegacydata:/usr/src/redmine/files
     depends_on:
       - postgres
     logging:
@@ -178,7 +180,7 @@ services:
     expose:
       - "3000"
     volumes:
-      - redminelegacydata:/usr/src/redmine/files
+      - redminedata:/usr/src/redmine/files
     depends_on:
       - postgres
     logging:
