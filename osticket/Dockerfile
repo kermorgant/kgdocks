@@ -4,6 +4,8 @@ MAINTAINER Mikael Kermorgant <mikael.kermorgant@gmail.com>
 # setup workdir 
 RUN mkdir /var/www/osticket
 
+VOLUME ["/var/www/osticket"]
+
 # environment for osticket 
 ENV HOME /var/www/osticket
 
@@ -53,7 +55,6 @@ RUN wget -nv -O osticket/include/i18n/fr.phar http://osticket.com/sites/default/
     wget -nv -O osticket/include/i18n/sv_SE.phar http://osticket.com/sites/default/files/download/lang/sv_SE.phar && \
     wget -nv -O osticket/include/i18n/de.phar http://osticket.com/sites/default/files/download/lang/de.phar
 
-VOLUME ["/var/www/osticket"]
 
 ADD supervisord.conf /usr/local/etc/supervisord.conf
 ADD msmtp.conf /usr/local/etc/msmtp.conf
