@@ -3,10 +3,8 @@ MAINTAINER Mikael Kermorgant <mikael.kermorgant@gmail.com>
 
 # setup workdir 
 RUN mkdir /var/www/osticket
-WORKDIR /var/www/osticket
 
 # environment for osticket 
-ENV OSTICKET_VERSION 1.9.14
 ENV HOME /var/www/osticket
 
 ENV REFRESHED_AT 2016-09-09
@@ -33,6 +31,8 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     && docker-php-ext-install soap gettext calendar zip \
     && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install imap
+
+ENV OSTICKET_VERSION 1.9.14
 
 WORKDIR /var/www
 
