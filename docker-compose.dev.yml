@@ -44,6 +44,7 @@ services:
 
   osticket:
     env_file:
+      - common.priv.env          
       - ./osticket/osticket.priv.env
 
   jenkins:

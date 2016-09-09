@@ -29,3 +29,8 @@ services:
     env_file: 
       - /etc/docker/common.env
       - /etc/docker/xibo.env
+
+  osticket:
+    env_file:
+      - /etc/docker/common.env
+      - /etc/docker/osticket.env

@@ -107,7 +107,9 @@ services:
     expose:
       - 9000
     volumes:
-      - osticketdata:/data
+      - osticketdata:/var/www/osticket
+      - ./osticket/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./osticket/php.ini:/usr/local/etc/php/php.ini      
     links:
       - mariadb      
     logging:

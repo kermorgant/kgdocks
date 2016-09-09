@@ -33,7 +33,7 @@ $vars = array(
   'cron_interval'   => getenv("CRON_INTERVAL")        ?: 5,
 
   'siri'     => getenv("INSTALL_SECRET"),
-  'config'   => getenv("INSTALL_CONFIG") ?: '/data/upload/include/ost-sampleconfig.php'
+  'config'   => getenv("INSTALL_CONFIG") ?: '/var/www/osticket/include/ost-sampleconfig.php'
 );
 
 //Script settings
@@ -57,16 +57,17 @@ function convertStrToBool($varName, $default) {
 }
 
 //Require files (must be done before any output to avoid session start warnings)
-chdir("/data/upload/setup_hidden");
-require "/data/upload/setup_hidden/setup.inc.php";
+chdir("/var/www/osticket/setup_hidden");
+require "/var/www/osticket/setup_hidden/setup.inc.php";
 require_once INC_DIR.'class.installer.php';
+
 
 
 /************************* Mail Configuration *******************************************/
 define('MAIL_CONFIG_FILE','/etc/msmtp');
 
 echo "Configuring mail settings\n";
-if (!$mailConfig = file_get_contents('/data/msmtp.conf')) {
+if (!$mailConfig = file_get_contents('/usr/local/etc/msmtp.conf')) {
   err("Failed to load mail configuration file");
 };
 $mailConfig = str_replace('%SMTP_HOSTNAME%', $vars['smtp_host'], $mailConfig);
@@ -91,17 +92,18 @@ define('CRON_JOB_FILE','/etc/cron.d/osticket');
 $interval = (int)$vars['cron_interval'];
 if ($interval > 0) {
   echo "OSTicket cron job is set to run every {$interval} minutes\n";
-  $cron = "*/{$interval} * * * * www-data /usr/bin/php -c /etc/php5/fpm/php.ini /data/upload/api/cron.php\n";
+  $cron = "*/{$interval} * * * * www-data /usr/bin/php -c /etc/php5/fpm/php.ini /var/www/osticket/api/cron.php\n";
   file_put_contents(CRON_JOB_FILE, $cron);
 } else {
   echo "OSTicket cron job is disabled\n";
   unlink(CRON_JOB_FILE);
 }
 
+
 /************************* OSTicket Installation *******************************************/
 
 //Create installer class
-define('OSTICKET_CONFIGFILE','/data/upload/include/ost-config.php');
+define('OSTICKET_CONFIGFILE','/var/www/osticket/include/ost-config.php');
 $installer = new Installer(OSTICKET_CONFIGFILE); //Installer instance.
 
 //Determine if using linked container
@@ -122,19 +124,19 @@ if (!$linked) {
 }
 
 //Wait for database connection
-echo "Waiting for database TCP connection to become available...\n";
-$s = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-$t = 0;
-while (!@socket_connect($s,$vars['dbhost'],3306) && $t < CONNECTION_TIMEOUT_SEC) {
-  $t++;
-  if (($t % 15) == 0) {
-    echo "Waited for $t seconds...\n";
-  }
-  sleep(1);
-}
-if ($t >= CONNECTION_TIMEOUT_SEC) {
-  err("Timed out waiting for database TCP connection");
-}
+//echo "Waiting for database TCP connection to become available...\n";
+// $s = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+// $t = 0;
+// while (!@socket_connect($s,$vars['dbhost'],3306) && $t < CONNECTION_TIMEOUT_SEC) {
+//   $t++;
+//   if (($t % 15) == 0) {
+//     echo "Waited for $t seconds...\n";
+//   }
+//   sleep(1);
+// }
+// if ($t >= CONNECTION_TIMEOUT_SEC) {
+//   err("Timed out waiting for database TCP connection");
+// }
 
 //Check database installation status
 $db_installed = false;
@@ -153,10 +155,11 @@ elseif(!db_select_database($vars['dbname']) && !db_create_database($vars['dbname
        $db_installed = true;
        echo "Database already installed\n";
    }
+   echo "should be connected now";
 }
 
 //Create secret if not set by env var and not previously stored
-DEFINE('SECRET_FILE','/data/secret.txt');
+DEFINE('SECRET_FILE','/var/www/osticket/secret.txt');
 if (!$vars['siri']) {
   if (file_exists(SECRET_FILE)) {
     echo "Loading installation secret\n";
