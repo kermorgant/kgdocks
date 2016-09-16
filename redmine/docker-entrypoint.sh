@@ -86,7 +86,7 @@ case "$1" in
 		if [ ! -d /usr/src/redmine/plugins/redmine_login_attempts_limit ]
 		then
 		    cd /usr/src/redmine/plugins
-		    git clone git@github.com:midnightSuyama/redmine_login_attempts_limit.git
+		    git clone https://github.com/midnightSuyama/redmine_login_attempts_limit.git
 		fi 		
 		
 		if [ "$1" = 'passenger' ]; then
