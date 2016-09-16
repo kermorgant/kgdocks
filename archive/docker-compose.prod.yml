@@ -1,0 +1,12 @@
+version: '2'
+services:
+
+  postgres:
+    env_file: 
+      - /etc/docker/common.env
+      - /etc/docker/postgres.env
+  
+  redmine-legacy:
+    env_file:
+      - /etc/docker/common.env
+      - /etc/docker/redmine-legacy.env      

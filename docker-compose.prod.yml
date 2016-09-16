@@ -1,10 +1,5 @@
 version: '2'
 services:
-
-  postgres:
-    env_file: 
-      - /etc/docker/common.env
-      - /etc/docker/postgres.env
   
   mariadb:
     env_file: /etc/docker/mariadb.env
@@ -20,11 +15,7 @@ services:
     env_file:
       - /etc/docker/common.env
       - /etc/docker/redmine.env
-
-  redmine-legacy:
-    env_file:
-      - /etc/docker/common.env
-      - /etc/docker/redmine-legacy.env      
+  
   xibo:
     env_file: 
       - /etc/docker/common.env
