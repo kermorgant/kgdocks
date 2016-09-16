@@ -2,6 +2,11 @@ FROM nginx:stable
 MAINTAINER Mikael Kermorgant <mikael.kermorgant@gmail.com>
 ENV REFRESHED_AT 2016-05-20
 
+RUN apt-get update && apt-get install -y \
+    geoip-database \
+    libgeoip1 \
+    && rm -rf /var/lib/apt/lists/* 
+
 RUN mkdir -p /var/www/html
 RUN rm -f /etc/nginx/conf.d/*
 
