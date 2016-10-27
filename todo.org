@@ -1,0 +1,24 @@
+* To-Do list for kgdocks
+
+** TODO Isolate mutual services
+   + create a bridge network above the compose
+     read this : https://docs.docker.com/engine/userguide/networking/
+http://stackoverflow.com/questions/34393779/connect-two-instances-of-docker-compose
+
+** TODO fault tolerance on the frontend
+
+   the frontend should be able to have a vhost for the backend, and tolerate
+   that backend should be able to fail.
+
+   - should keep the naming of the backend
+   - nginx fails when starting with a failed backend, so :
+     1) maybe a wrapper should check before how to handle that vhost
+     2) upon failure of the backend, send a notification
+
+** TODO replace the arg handling of the compose.sh script
+   Already done it a better way on another project, just copy/paste/adapt
+
+** TODO uniformize way of handling app updates
+
+** TODO use env variables in the compose file
+   in order to run some "compose apps" multiple times
