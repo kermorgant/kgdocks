@@ -1,45 +1,46 @@
 version: '2'
 services:
 
-  mariadb:
-    ports:
-      - "3306:3306"
-    env_file: 
-      - ./mariadb/mariadb.env
-      
+  # mariadb:
+  #   ports:
+  #     - "3306:3306"
+  #   env_file:
+  #     - ./mariadb/mariadb.env
+
   nginx:
-    env_file: 
+    env_file:
+      - common.priv.env
       - ./nginx/nginx.priv.env
     build:
-      dockerfile: Dockerfile-dev     
+      dockerfile: Dockerfile-dev
 
   redmine:
-    env_file: 
-      - common.priv.env    
-      - ./redmine/redmine.env        
+    env_file:
+      - common.priv.env
+      - ./redmine/redmine.env
   xibo:
-    env_file: 
+    env_file:
       - common.priv.env
       - ./xibo/xibo.env
 
-  booked:
-    env_file: 
-      - common.priv.env    
-      - ./booked/booked.env
+  # booked:
+  #   env_file:
+  #     - common.priv.env
+  #     - ./booked/booked.env
 
-  osticket:
-    environment:
-      - MYSQL_HOST="mariadb"
-      - MYSQL_DATABASE="osticket"
-      - MYSQL_USER="osticket"
-      - MYSQL_PASSWORD="password"
-    env_file:
-      - common.priv.env          
-      - ./osticket/osticket.priv.env
+  # osticket:
+  #   environment:
+  #     - MYSQL_HOST="mariadb"
+  #     - MYSQL_DATABASE="osticket"
+  #     - MYSQL_USER="osticket"
+  #     - MYSQL_PASSWORD="password"
+  #   env_file:
+  #     - common.priv.env
+  #     - ./osticket/osticket.priv.env
 
-  jenkins:
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./jenkins/php.dev.ini:/usr/local/etc/php/php.ini      
-      - ./jenkins/php.dev-noxdebug.ini:/usr/local/etc/php/php-noxdebug.ini             
+  # jenkins:
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - ./jenkins/php.dev.ini:/usr/local/etc/php/php.ini
+  #     - ./jenkins/php.dev-noxdebug.ini:/usr/local/etc/php/php-noxdebug.ini

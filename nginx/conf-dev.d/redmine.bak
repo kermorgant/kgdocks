@@ -6,7 +6,7 @@ upstream redmine {
 
 server {
     listen 80;
-    server_name redmine.local;
+    server_name redmine.kgtech.local;
 
     location / {
         try_files $uri @redmine;
@@ -17,4 +17,3 @@ server {
         proxy_pass http://redmine;
     }
 }
-

@@ -1,0 +1,51 @@
+version: '2'
+
+volumes:
+  mariadbstore:
+    external: true
+
+networks:
+  front:
+    external: true
+  back:
+    external: true
+
+services:
+  haproxy:
+    image: haproxy:1.6
+    ports:
+      - "80:80"
+    volumes:
+      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    networks:
+      - front
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://localhost:514
+        tag: haproxy
+
+  mariadb:
+    container_name: mariadb
+    image: mariadb:10.1
+    expose:
+      - "3306"
+    volumes:
+      - mariadbstore:/var/lib/mysql
+    networks:
+      - back
+    depends_on:
+      - syslog
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://localhost:514
+        tag: mariadb
+
+  syslog:
+    container_name: syslog
+    build: syslog
+    networks:
+      - back
+    ports:
+      - "localhost:514:514/udp"

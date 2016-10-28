@@ -5,6 +5,8 @@
      read this : https://docs.docker.com/engine/userguide/networking/
 http://stackoverflow.com/questions/34393779/connect-two-instances-of-docker-compose
 
+*** TODO setup haproxy as a common frontend
+
 ** TODO fault tolerance on the frontend
 
    the frontend should be able to have a vhost for the backend, and tolerate
@@ -19,6 +21,5 @@ http://stackoverflow.com/questions/34393779/connect-two-instances-of-docker-comp
    Already done it a better way on another project, just copy/paste/adapt
 
 ** TODO uniformize way of handling app updates
-
 ** TODO use env variables in the compose file
    in order to run some "compose apps" multiple times

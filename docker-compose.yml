@@ -1,21 +1,19 @@
 version: '2'
 
 volumes:
-  mariadbstore:
-    external: true
   openvpndata:
     external: true
   xibodata:
     external: true
   redminedata:
-    external: true    
+    external: true
   bookeddata:
     external: true
   jenkinsdata:
     external: true
   osticketdata:
-    external: true 
-    
+    external: true
+
 networks:
   front:
     external: true
@@ -30,31 +28,35 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - /etc/ssl:/etc/ssl:ro
       - ./nginx/local:/var/www
+      - ./nginx/conf-dev.d/:/etc/nginx/conf.d
       - xibodata:/var/www/xibo:ro
-      - bookeddata:/var/www/booked:ro
-      - osticketdata:/var/www/osticket:ro      
-    ports:
-      - "443:443"
-      - "80:80"
-    command: nginx
+      # - bookeddata:/var/www/booked:ro
+      # - osticketdata:/var/www/osticket:ro
+    # ports:
+    #   - "443:443"
+    #   - "80:80"
+    expose:
+      - "80"
+      - "443"
+    # command: nginx
     networks:
       front:
         aliases:
           - ds.${DOMAIN}
-          - support.${DOMAIN}
-    depends_on:
-      - redmine
-      - xibo
-      - syslog
-      - booked
-      - jenkins
-      - osticket
-    logging:
-      driver: syslog
-      options:
-        syslog-address: udp://localhost:514 
-        tag: nginx
-        
+          # - support.${DOMAIN}
+    # # depends_on:
+    #   #- redmine
+    #   - xibo
+      # - syslog
+      # - booked
+      # - jenkins
+      # - osticket
+    # logging:
+    #   driver: syslog
+    #   options:
+    #     syslog-address: udp://localhost:514
+    #     tag: nginx
+
   xibo:
     container_name: xibo
     image: kgtech/xibo17-docker
@@ -66,63 +68,45 @@ services:
       - ./xibo/php.ini:/usr/local/etc/php/php.ini
       - ./xibo/backup:/var/www/backup
       - xibodata:/var/www/xibo
-    links:
-      - mariadb
-    logging:
-       driver: syslog
-       options:
-         syslog-address: udp://localhost:514 
-         tag: xibo
-  booked:
-    container_name: booked
-    build: booked
-    networks:
-      - front
-      - back
-    volumes:
-      - ./xibo/php-fpm.conf:/usr/local/etc/php-fpm.conf
-      - ./xibo/php.ini:/usr/local/etc/php/php.ini
-      - bookeddata:/var/www/booked
-    links:
-      - mariadb
-      
-  osticket:
-    container_name: osticket
-    build: osticket
-    networks:
-      - front
-      - back
-    expose:
-      - 9000
-    volumes:
-      - osticketdata:/var/www/osticket
-      - ./osticket/php-fpm.conf:/usr/local/etc/php-fpm.conf
-      - ./osticket/php.ini:/usr/local/etc/php/php.ini      
-    links:
-      - mariadb      
-    logging:
-      driver: syslog
-      options:
-        syslog-address: udp://localhost:514 
-        tag: osticket      
-      
-  mariadb:
-    container_name: mariadb
-    build: mariadb
-    expose:
-      - "3306"
-    volumes:
-      - mariadbstore:/var/lib/mysql
-    networks:
-      - back
-    depends_on:
-      - syslog      
-    logging:
-      driver: syslog
-      options:
-        syslog-address: udp://localhost:514 
-        tag: mariadb
+    # links:
+    #   - mariadb
+    # logging:
+    #    driver: syslog
+    #    options:
+    #      syslog-address: udp://localhost:514
+    #      tag: xibo
+  # booked:
+  #   container_name: booked
+  #   build: booked
+  #   networks:
+  #     - front
+  #     - back
+  #   volumes:
+  #     - ./xibo/php-fpm.conf:/usr/local/etc/php-fpm.conf
+  #     - ./xibo/php.ini:/usr/local/etc/php/php.ini
+  #     - bookeddata:/var/www/booked
+  #   links:
+  #     - mariadb
 
+  # osticket:
+  #   container_name: osticket
+  #   build: osticket
+  #   networks:
+  #     - front
+  #     - back
+  #   expose:
+  #     - 9000
+  #   volumes:
+  #     - osticketdata:/var/www/osticket
+  #     - ./osticket/php-fpm.conf:/usr/local/etc/php-fpm.conf
+  #     - ./osticket/php.ini:/usr/local/etc/php/php.ini
+  #   links:
+  #     - mariadb
+  #   logging:
+  #     driver: syslog
+  #     options:
+  #       syslog-address: udp://localhost:514
+  #       tag: osticket
 
   redmine:
     container_name: redmine
@@ -134,28 +118,20 @@ services:
       - "3000"
     volumes:
       - redminedata:/usr/src/redmine/files
-    depends_on:
-      - mariadb
+    # depends_on:
+      # - mariadb
     logging:
       driver: syslog
       options:
-        syslog-address: udp://localhost:514 
+        syslog-address: udp://localhost:514
         tag: redmine
-        
-  syslog:
-    container_name: syslog
-    build: syslog
-    networks:
-      - front
-    ports:
-      - "localhost:514:514/udp"
 
-  jenkins:
-    container_name: jenkins
-    image: kgtech/jenkins-docker
-    expose:
-      - "8080"
-    volumes:
-      - jenkinsdata:/jenkins
-    networks:
-      - front
+  # jenkins:
+  #   container_name: jenkins
+  #   image: kgtech/jenkins-docker
+  #   expose:
+  #     - "8080"
+  #   volumes:
+  #     - jenkinsdata:/jenkins
+  #   networks:
+  #     - front

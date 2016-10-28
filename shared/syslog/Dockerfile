@@ -1,7 +1,7 @@
 # FROM voxxit/base:alpine
 
 FROM alpine:3.3
-MAINTAINER Mikael Kermorgant <mikael.kermorgant@gmail.com>
+MAINTAINER Mikael Kermorgant <mikael@kgtech.fi>
 
 RUN  apk add --no-cache rsyslog bash
 
