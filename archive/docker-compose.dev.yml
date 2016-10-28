@@ -1,0 +1,17 @@
+version: '2'
+services:
+
+  postgres:
+    ports:
+      - "5432:5432"
+    env_file: 
+      - ./postgres/postgres.env       
+
+  odoo:
+    ports:
+      - "8069:8069"   
+      
+  redmine-legacy:
+    env_file: 
+      - common.priv.env    
+      - ./redmine-legacy/redmine.env

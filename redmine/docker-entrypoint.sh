@@ -81,7 +81,13 @@ case "$1" in
 		    cd /usr/src/redmine
 		    bundle install --without development test
 		    rake redmine:plugins:migrate RAILS_ENV=production
-		fi    
+		fi
+
+		if [ ! -d /usr/src/redmine/plugins/redmine_login_attempts_limit ]
+		then
+		    cd /usr/src/redmine/plugins
+		    git clone https://github.com/midnightSuyama/redmine_login_attempts_limit.git
+		fi 		
 		
 		if [ "$1" = 'passenger' ]; then
 			# Don't fear the reaper.

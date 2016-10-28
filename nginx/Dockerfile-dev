@@ -2,15 +2,20 @@ FROM nginx:stable
 MAINTAINER Mikael Kermorgant <mikael.kermorgant@gmail.com>
 ENV REFRESHED_AT 2016-04-09
 
+RUN apt-get update && apt-get install -y \
+    geoip-database \
+    libgeoip1 \
+    && rm -rf /var/lib/apt/lists/* 
+
 RUN mkdir -p /var/www/html
 RUN rm -f /etc/nginx/conf.d/*
 
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY conf-dev.d/odoo.conf /etc/nginx/conf.d/odoo.conf
+#COPY conf-dev.d/odoo.conf /etc/nginx/conf.d/odoo.conf
 COPY conf-dev.d/redmine.conf /etc/nginx/conf.d/redmine.conf
-COPY conf-dev.d/redmine-legacy.conf /etc/nginx/conf.d/redmine-legacy.conf
+#COPY conf-dev.d/redmine-legacy.conf /etc/nginx/conf.d/redmine-legacy.conf
 COPY conf-dev.d/ds.conf /etc/nginx/conf.d/ds.conf
-COPY conf-dev.d/booked.conf /etc/nginx/conf.d/booked.conf
+#COPY conf-dev.d/booked.conf /etc/nginx/conf.d/booked.conf
 COPY conf-dev.d/odoo.conf /etc/nginx/conf.d/odoo.conf
 COPY conf-dev.d/osticket.conf /etc/nginx/conf.d/osticket.conf
 COPY conf-dev.d/local.conf /etc/nginx/conf.d/local.conf

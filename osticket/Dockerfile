@@ -50,10 +50,10 @@ RUN wget -nv -O osTicket.zip http://osticket.com/sites/default/files/download/os
     chmod 777 /var/www/osticket/include
 
 # Download languages packs
-RUN wget -nv -O osticket/include/i18n/fr.phar http://osticket.com/sites/default/files/download/lang/fr.phar && \
-    wget -nv -O osticket/include/i18n/fi.phar http://osticket.com/sites/default/files/download/lang/fi.phar && \
-    wget -nv -O osticket/include/i18n/sv_SE.phar http://osticket.com/sites/default/files/download/lang/sv_SE.phar && \
-    wget -nv -O osticket/include/i18n/de.phar http://osticket.com/sites/default/files/download/lang/de.phar
+RUN wget -nv -O osticket/include/i18n/fr.phar http://osticket.com/sites/default/files/download/lang/fr.phar \
+    && wget -nv -O osticket/include/i18n/fi.phar http://osticket.com/sites/default/files/download/lang/fi.phar \
+    && wget -nv -O osticket/include/i18n/sv_SE.phar http://osticket.com/sites/default/files/download/lang/sv_SE.phar \
+    && wget -nv -O osticket/include/i18n/de.phar http://osticket.com/sites/default/files/download/lang/de.phar
 
 
 ADD supervisord.conf /usr/local/etc/supervisord.conf
@@ -61,6 +61,7 @@ ADD msmtp.conf /usr/local/etc/msmtp.conf
 
 ADD bin/install.php /usr/local/bin
 ADD bin/start.sh /start.sh
+RUN chmod +x /start.sh
 
 EXPOSE 80
 CMD ["/start.sh"]

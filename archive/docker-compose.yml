@@ -1,0 +1,79 @@
+version: '2'
+
+volumes:
+  odoo-etc:
+    external: true
+  odoo-addons:
+    external: true
+  odoo-var:
+    external: true
+  pgstore:
+    external: true
+  redminelegacydata:
+    external: true
+
+networks:
+  front:
+    external: true
+  back:
+    external: true
+
+services:              
+  odoo:
+    container_name: odoo
+    build: odoo
+    depends_on:
+      - postgres
+    links:
+      - postgres:db
+    expose:
+      - "8069"
+    volumes:
+      - odoo-etc:/etc/odoo
+      - odoo-addons:/mnt/extra-addons
+      - odoo-var:/var/lib/odoo
+    networks:
+      - front
+      - back
+    # logging:
+    #   driver: syslog
+    #   options:
+    #     syslog-address: udp://localhost:514 
+    #     tag: odoo
+
+  redmine-legacy:
+    container_name: redmine-legacy
+    build: redmine-legacy
+    networks:
+      - front
+      - back
+    expose:
+      - "3000"
+    volumes:
+      - redminelegacydata:/usr/src/redmine/files
+    depends_on:
+      - postgres
+    # logging:
+    #   driver: syslog
+    #   options:
+    #     syslog-address: udp://localhost:514 
+    #     tag: redmine-legacy
+
+        
+  postgres:
+    container_name: postgres
+    build: postgres
+    volumes:
+      - pgstore:/dbdata
+    expose:
+      - "5432"
+    networks:
+      - back
+    # depends_on:
+    #   - syslog     
+      
+    # logging:
+    #   driver: syslog
+    #   options:
+    #     syslog-address: udp://localhost:514 
+    #     tag: postgres
