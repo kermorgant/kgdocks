@@ -75,38 +75,6 @@ services:
     #    options:
     #      syslog-address: udp://localhost:514
     #      tag: xibo
-  # booked:
-  #   container_name: booked
-  #   build: booked
-  #   networks:
-  #     - front
-  #     - back
-  #   volumes:
-  #     - ./xibo/php-fpm.conf:/usr/local/etc/php-fpm.conf
-  #     - ./xibo/php.ini:/usr/local/etc/php/php.ini
-  #     - bookeddata:/var/www/booked
-  #   links:
-  #     - mariadb
-
-  # osticket:
-  #   container_name: osticket
-  #   build: osticket
-  #   networks:
-  #     - front
-  #     - back
-  #   expose:
-  #     - 9000
-  #   volumes:
-  #     - osticketdata:/var/www/osticket
-  #     - ./osticket/php-fpm.conf:/usr/local/etc/php-fpm.conf
-  #     - ./osticket/php.ini:/usr/local/etc/php/php.ini
-  #   links:
-  #     - mariadb
-  #   logging:
-  #     driver: syslog
-  #     options:
-  #       syslog-address: udp://localhost:514
-  #       tag: osticket
 
   redmine:
     container_name: redmine
