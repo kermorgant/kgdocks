@@ -1,0 +1,4 @@
+* remove install/install.php after install
+
+* please change the password for the default users
+  glpi post-only tech normal

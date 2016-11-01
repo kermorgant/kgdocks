@@ -22,5 +22,5 @@ services:
     volumes:
       - redminedata:/usr/src/redmine/files
     env_file:
-      - .
+      - ./redmine.env
       - ./redmine.priv.env
