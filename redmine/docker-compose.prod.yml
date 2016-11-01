@@ -1,0 +1,9 @@
+version: '2'
+services:
+
+  redmine:
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://localhost:514
+        tag: redmine

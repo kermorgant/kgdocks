@@ -1,0 +1,26 @@
+version: '2'
+
+volumes:
+  redminedata:
+    external: true
+
+networks:
+  front:
+    external: true
+  back:
+    external: true
+
+services:
+  redmine:
+    container_name: redmine
+    build: .
+    networks:
+      - front
+      - back
+    expose:
+      - "3000"
+    volumes:
+      - redminedata:/usr/src/redmine/files
+    env_file:
+      - .
+      - ./redmine.priv.env
