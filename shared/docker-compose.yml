@@ -3,6 +3,8 @@ version: '2'
 volumes:
   mariadbstore:
     external: true
+  xibodata:
+    external: true
 
 networks:
   front:
@@ -11,6 +13,34 @@ networks:
     external: true
 
 services:
+  nginx:
+    container_name: nginx
+    build: nginx
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /etc/ssl:/etc/ssl:ro
+      - ./nginx/local:/var/www
+      - ./nginx/conf-dev.d/:/etc/nginx/conf.d
+      - xibodata:/var/www/xibo:ro
+      # - bookeddata:/var/www/booked:ro
+      # - osticketdata:/var/www/osticket:ro
+    ports:
+      - "80:80"
+    networks:
+      - front
+      - back
+
+  nginx-gen:
+    container_name: nginx-gen
+    image: jwilder/docker-gen
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    volumes_from:
+      - nginx
+    command: "-notify-sighup nginx -watch /etc/docker-gen/nginx.tmpl /etc/nginx/conf.d/default.conf"
+    networks:
+      - front
+
   haproxy:
     image: haproxy:1.6
     ports:
@@ -19,11 +49,6 @@ services:
       - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
     networks:
       - front
-    logging:
-      driver: syslog
-      options:
-        syslog-address: udp://localhost:514
-        tag: haproxy
 
   mariadb:
     container_name: mariadb
@@ -34,13 +59,6 @@ services:
       - mariadbstore:/var/lib/mysql
     networks:
       - back
-    depends_on:
-      - syslog
-    logging:
-      driver: syslog
-      options:
-        syslog-address: udp://localhost:514
-        tag: mariadb
 
   syslog:
     container_name: syslog

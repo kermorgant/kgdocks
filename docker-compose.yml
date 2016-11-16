@@ -21,28 +21,28 @@ networks:
     external: true
 
 services:
-  nginx:
-    container_name: nginx
-    build: nginx
-    volumes:
-      - /etc/letsencrypt:/etc/letsencrypt:ro
-      - /etc/ssl:/etc/ssl:ro
-      - ./nginx/local:/var/www
-      - ./nginx/conf-dev.d/:/etc/nginx/conf.d
-      - xibodata:/var/www/xibo:ro
-      # - bookeddata:/var/www/booked:ro
-      # - osticketdata:/var/www/osticket:ro
-    # ports:
-    #   - "443:443"
-    #   - "80:80"
-    expose:
-      - "80"
-      - "443"
-    # command: nginx
-    networks:
-      front:
-        aliases:
-          - ds.${DOMAIN}
+  # nginx:
+  #   container_name: nginx
+  #   build: nginx
+  #   volumes:
+  #     - /etc/letsencrypt:/etc/letsencrypt:ro
+  #     - /etc/ssl:/etc/ssl:ro
+  #     - ./nginx/local:/var/www
+  #     - ./nginx/conf-dev.d/:/etc/nginx/conf.d
+  #     - xibodata:/var/www/xibo:ro
+  #     # - bookeddata:/var/www/booked:ro
+  #     # - osticketdata:/var/www/osticket:ro
+  #   # ports:
+  #   #   - "443:443"
+  #   #   - "80:80"
+  #   expose:
+  #     - "80"
+  #     - "443"
+  #   # command: nginx
+  #   networks:
+  #     front:
+  #       aliases:
+  #        - ds.${DOMAIN}
           # - support.${DOMAIN}
     # # depends_on:
     #   #- redmine
@@ -68,6 +68,8 @@ services:
       - ./xibo/php.ini:/usr/local/etc/php/php.ini
       - ./xibo/backup:/var/www/backup
       - xibodata:/var/www/xibo
+    # environment:
+    #   - VIRTUAL_HOST=ds.local
     # links:
     #   - mariadb
     # logging:
@@ -88,11 +90,9 @@ services:
       - redminedata:/usr/src/redmine/files
     # depends_on:
       # - mariadb
-    logging:
-      driver: syslog
-      options:
-        syslog-address: udp://localhost:514
-        tag: redmine
+
+    environment:
+      - VIRTUAL_HOST=redmine.local
 
   # jenkins:
   #   container_name: jenkins

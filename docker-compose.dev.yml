@@ -7,12 +7,12 @@ services:
   #   env_file:
   #     - ./mariadb/mariadb.env
 
-  nginx:
-    env_file:
-      - common.priv.env
-      - ./nginx/nginx.priv.env
-    build:
-      dockerfile: Dockerfile-dev
+  # nginx:
+  #   env_file:
+  #     - common.priv.env
+  #     - ./nginx/nginx.priv.env
+  #   build:
+  #     dockerfile: Dockerfile
 
   redmine:
     env_file:

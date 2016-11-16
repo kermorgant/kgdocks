@@ -1,11 +1,11 @@
 version: '2'
 services:
-  
+
   mariadb:
     env_file: /etc/docker/mariadb.env
 
   nginx:
-    env_file: 
+    env_file:
       - /etc/docker/common.env
       - /etc/docker/nginx.env
     build:
@@ -15,9 +15,13 @@ services:
     env_file:
       - /etc/docker/common.env
       - /etc/docker/redmine.env
-  
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://localhost:514
+        tag: redmine
   xibo:
-    env_file: 
+    env_file:
       - /etc/docker/common.env
       - /etc/docker/xibo.env
 

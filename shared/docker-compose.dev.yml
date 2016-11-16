@@ -1,8 +1,12 @@
 version: '2'
-services:
 
+services:
   mariadb:
     ports:
       - "3306:3306"
     env_file:
       - ./mariadb/mariadb.env
+
+  nginx-gen:
+    volumes:
+      - ./nginx/conf-dev.d/nginx.tmpl:/etc/docker-gen/nginx.tmpl

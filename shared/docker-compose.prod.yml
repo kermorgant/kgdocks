@@ -1,5 +1,25 @@
 version: '2'
 services:
-
   mariadb:
     env_file: /etc/docker/mariadb.env
+    depends_on:
+      - syslog
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://localhost:514
+        tag: mariadb
+
+
+  nginx-gen:
+    volumes:
+      - ./nginx/conf-prod.d/nginx.tmpl:/etc/docker-gen/nginx.tmpl
+
+  haproxy:
+    depends_on:
+      - syslog
+    logging:
+      driver: syslog
+      options:
+        syslog-address: udp://localhost:514
+        tag: haproxy
