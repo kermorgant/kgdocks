@@ -7,6 +7,10 @@ services:
     env_file:
       - ./mariadb/mariadb.env
 
+  nginx:
+    volumes:
+      - ./nginx/conf-dev.d/:/etc/nginx/conf.d
+
   nginx-gen:
     volumes:
       - ./nginx/conf-dev.d/nginx.tmpl:/etc/docker-gen/nginx.tmpl

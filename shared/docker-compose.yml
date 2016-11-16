@@ -20,7 +20,7 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt:ro
       - /etc/ssl:/etc/ssl:ro
       - ./nginx/local:/var/www
-      - ./nginx/conf-dev.d/:/etc/nginx/conf.d
+
       - xibodata:/var/www/xibo:ro
       # - bookeddata:/var/www/booked:ro
       # - osticketdata:/var/www/osticket:ro

@@ -13,6 +13,9 @@ services:
   nginx:
     ports:
       - "443:443"
+    volumes:
+      - ./nginx/conf-dev.d/:/etc/nginx/conf.d
+
 
   nginx-gen:
     volumes:
