@@ -1,0 +1,9 @@
+# fallback server if odoo is down
+server {
+	listen 127.0.0.1:80;
+	server_name erp.local;
+	root /var/www/html;
+	index index.html index.htm;
+	access_log /var/log/nginx/access.log;
+	error_log /var/log/nginx/error.log;
+}

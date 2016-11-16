@@ -41,14 +41,14 @@ services:
     networks:
       - front
 
-  haproxy:
-    image: haproxy:1.6
-    ports:
-      - "80:80"
-    volumes:
-      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
-    networks:
-      - front
+  # haproxy:
+  #   image: haproxy:1.6
+  #   ports:
+  #     - "80:80"
+  #   volumes:
+  #     - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+  #   networks:
+  #     - front
 
   mariadb:
     container_name: mariadb

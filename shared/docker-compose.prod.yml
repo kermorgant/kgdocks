@@ -15,11 +15,11 @@ services:
     volumes:
       - ./nginx/conf-prod.d/nginx.tmpl:/etc/docker-gen/nginx.tmpl
 
-  haproxy:
-    depends_on:
-      - syslog
-    logging:
-      driver: syslog
-      options:
-        syslog-address: udp://localhost:514
-        tag: haproxy
+  # haproxy:
+  #   depends_on:
+  #     - syslog
+  #   logging:
+  #     driver: syslog
+  #     options:
+  #       syslog-address: udp://localhost:514
+  #       tag: haproxy
