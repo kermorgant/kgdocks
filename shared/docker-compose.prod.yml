@@ -10,6 +10,9 @@ services:
         syslog-address: udp://localhost:514
         tag: mariadb
 
+  nginx:
+    ports:
+      - "443:443"
 
   nginx-gen:
     volumes:
